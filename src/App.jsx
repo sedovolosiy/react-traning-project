@@ -1,4 +1,7 @@
 import "./App.css";
+import chair from "./images/chair.png";
+import table from "./images/table.png";
+import sofa from "./images/sofa.png";
 
 // вместо props.name и props.year используем деструктуризацию
 // props - это объект, содержащий все переданные свойства
@@ -15,23 +18,28 @@ function Header({ name, year }) {
 }
 
 const furniture = [
-  { id: 1, name: "Chair", price: 50 },
-  { id: 2, name: "Table", price: 150 },
-  { id: 3, name: "Sofa", price: 300 },
+  { id: 1, name: "Chair", price: 50, image: chair },
+  { id: 2, name: "Table", price: 150, image: table },
+  { id: 3, name: "Sofa", price: 300, image: sofa },
 ];
 
 function Main({ furniture }) {
   return (
-    <main>
-      <h2>Furniture List</h2>
-      <ul>
-        {furniture.map((item) => (
-          <li style={{ listStyleType: "none" }} key={item.id}>
-            {item.name} - ${item.price}
-          </li>
-        ))}
-      </ul>
-    </main>
+    <>
+      <div>
+        <h2>Welcome to my showroom!</h2>
+      </div>
+      <main>
+        <ul>
+          {furniture.map((item) => (
+            <li style={{ listStyleType: "none" }} key={item.id}>
+              <img src={item.image} height={100} alt={item.name} />
+              {item.name} - ${item.price}
+            </li>
+          ))}
+        </ul>
+      </main>
+    </>
   );
 }
 
@@ -40,8 +48,7 @@ function App() {
     <div>
       <Header name="Serhii" year={new Date().getFullYear()} />
       <main>
-        <h2>Welcome to my room!</h2>
-        <p>This is a simple React application.</p>
+        <p>There are a lot of furnitures in the room.</p>
       </main>
       <Main furniture={furniture} />
     </div>
