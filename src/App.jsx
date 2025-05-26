@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import chair from "./images/chair.png";
 import table from "./images/table.png";
 import sofa from "./images/sofa.png";
@@ -65,14 +65,23 @@ function App() {
   // В данном случае мы просто переключаем статус между true и false
   // useState можно использовать, если логика изменения состояния проста
   // и не требует сложных операций
+
+  useEffect(() => {
+    console.log(`The showroom is ${status ? "open" : "closed"}.`);
+  }, [status]);
+  // useEffect позволяет выполнять побочные эффекты в функциональных компонентах
+  // В данном случае мы выводим в консоль сообщение о статусе магазина
+  // Второй аргумент - массив зависимостей, который указывает, что
+  // эффект должен выполняться только при изменении статуса
+  // Если массив зависимостей пустой, эффект выполняется только один раз
+  // при монтировании компонента
+
   return (
     <div>
       <Header name="Serhii" year={new Date().getFullYear()} />
       <main>
         <p>The showroom is currently {status ? "open" : "closed"}</p>
-        <button onClick={toggle}>
-          {status ? "Close" : "Open"} Showroom{" "}
-        </button>
+        <button onClick={toggle}>{status ? "Close" : "Open"} Showroom </button>
       </main>
       <Main furniture={furniture} openStatus={status} toggle={toggle} />
     </div>
