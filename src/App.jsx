@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState, useReducer } from "react";
 import chair from "./images/chair.png";
 import table from "./images/table.png";
 import sofa from "./images/sofa.png";
@@ -23,13 +24,26 @@ const furniture = [
   { id: 3, name: "Sofa", price: 300, image: sofa },
 ];
 
-function Main({ furniture }) {
+function Main({ furniture, openStatus, toggle }) {
+  // Если магазин закрыт, показываем минимальный интерфейс
+  if (!openStatus) {
+    return (
+      <>
+        <div>
+          <h2>Sorry, we are closed.</h2>
+        </div>
+      </>
+    );
+  }
+
+  // Если магазин открыт, показываем полный интерфейс
   return (
     <>
       <div>
         <h2>Welcome to my showroom!</h2>
       </div>
       <main>
+        <button onClick={toggle}>Close Showroom</button>
         <ul>
           {furniture.map((item) => (
             <li style={{ listStyleType: "none" }} key={item.id}>
@@ -44,13 +58,23 @@ function Main({ furniture }) {
 }
 
 function App() {
+  // const [status, setStatus] = useState(true);
+  const [status, toggle] = useReducer((prevStatus) => !prevStatus, true);
+  // useReducer позволяет более гибко управлять состоянием,
+  // особенно если логика изменения состояния становится сложной
+  // В данном случае мы просто переключаем статус между true и false
+  // useState можно использовать, если логика изменения состояния проста
+  // и не требует сложных операций
   return (
     <div>
       <Header name="Serhii" year={new Date().getFullYear()} />
       <main>
-        <p>There are a lot of furnitures in the room.</p>
+        <p>The showroom is currently {status ? "open" : "closed"}</p>
+        <button onClick={toggle}>
+          {status ? "Close" : "Open"} Showroom{" "}
+        </button>
       </main>
-      <Main furniture={furniture} />
+      <Main furniture={furniture} openStatus={status} toggle={toggle} />
     </div>
   );
 }
