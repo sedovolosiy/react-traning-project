@@ -12,6 +12,8 @@ function Header({ name, year }) {
   return (
     <AppBar
       position="static"
+      component="header"
+      role="banner"
       sx={{
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
         boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
@@ -28,24 +30,33 @@ function Header({ name, year }) {
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Avatar
+              aria-hidden="true"
               sx={{
                 bgcolor: "rgba(255,255,255,0.2)",
                 backdropFilter: "blur(10px)",
               }}
             >
-              <Home />
+              <Home aria-hidden="true" />
             </Avatar>
             <Box>
               <Typography
                 variant="h4"
                 component="h1"
-                sx={{ fontWeight: 700, mb: 0.5 }}
+                sx={{
+                  fontWeight: 700,
+                  mb: 0.5,
+                  textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                }}
               >
                 {name}'s Furniture Showroom
               </Typography>
               <Typography
                 variant="subtitle1"
-                sx={{ color: "rgba(255,255,255,0.8)" }}
+                component="p"
+                sx={{
+                  color: "rgba(255,255,255,0.9)",
+                  fontWeight: 400,
+                }}
               >
                 Premium furniture collection
               </Typography>
@@ -54,6 +65,8 @@ function Header({ name, year }) {
           <Box sx={{ textAlign: "right" }}>
             <Typography
               variant="caption"
+              component="p"
+              aria-label={`Copyright ${year}, All rights reserved`}
               sx={{ color: "rgba(255,255,255,0.7)" }}
             >
               © {year} All rights reserved

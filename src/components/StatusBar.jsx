@@ -8,9 +8,15 @@ import {
 } from "@mui/material";
 
 function StatusBar({ status, toggle }) {
+  const statusText = status ? "OPEN" : "CLOSED";
+  const actionText = status ? "Close" : "Open";
+
   return (
     <Paper
       elevation={1}
+      component="section"
+      role="region"
+      aria-labelledby="showroom-status"
       sx={{
         borderRadius: 0,
         borderBottom: 1,
@@ -29,6 +35,8 @@ function StatusBar({ status, toggle }) {
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Box
+              role="img"
+              aria-label={`Status indicator: showroom is ${statusText.toLowerCase()}`}
               sx={{
                 width: 12,
                 height: 12,
@@ -42,16 +50,27 @@ function StatusBar({ status, toggle }) {
                 },
               }}
             />
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <Typography
+              id="showroom-status"
+              variant="h6"
+              component="h2"
+              sx={{
+                fontWeight: 500,
+                fontSize: "1rem", // Ensure consistent sizing
+              }}
+            >
               Showroom is currently{" "}
               <Box
                 component="span"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
                 sx={{
                   color: status ? "success.main" : "error.main",
-                  fontWeight: 700,
+                  fontWeight: 600,
                 }}
               >
-                {status ? "OPEN" : "CLOSED"}
+                {statusText}
               </Box>
             </Typography>
           </Box>
@@ -61,9 +80,14 @@ function StatusBar({ status, toggle }) {
                 checked={status}
                 onChange={toggle}
                 color={status ? "error" : "success"}
+                inputProps={{
+                  "aria-describedby": "switch-description",
+                  "aria-label": `${actionText} showroom`,
+                }}
               />
             }
-            label={`${status ? "Close" : "Open"} Showroom`}
+            label={`${actionText} Showroom`}
+            labelPlacement="start"
             sx={{
               "& .MuiFormControlLabel-label": {
                 fontWeight: 600,
@@ -71,6 +95,20 @@ function StatusBar({ status, toggle }) {
               },
             }}
           />
+          <Typography
+            id="switch-description"
+            variant="srOnly"
+            component="div"
+            sx={{
+              position: "absolute",
+              left: "-10000px",
+              width: "1px",
+              height: "1px",
+              overflow: "hidden",
+            }}
+          >
+            Toggle to {actionText.toLowerCase()} the furniture showroom
+          </Typography>
         </Box>
       </Container>
     </Paper>
