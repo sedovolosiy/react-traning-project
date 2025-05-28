@@ -4,6 +4,87 @@ import chair from "./images/chair.png";
 import table from "./images/table.png";
 import sofa from "./images/sofa.png";
 
+// Material-UI imports
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Button,
+  Chip,
+  Box,
+  Paper,
+  IconButton,
+  Switch,
+  FormControlLabel,
+  Alert,
+  Avatar,
+  Fab,
+  Slide,
+  Fade,
+} from "@mui/material";
+import {
+  Home,
+  Store,
+  ShoppingCart,
+  Visibility,
+  StoreOutlined,
+  LockOutlined,
+} from "@mui/icons-material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
+// Создаем кастомную тему Material-UI
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#6366f1",
+      light: "#8b5cf6",
+      dark: "#4f46e5",
+    },
+    secondary: {
+      main: "#ec4899",
+      light: "#f472b6",
+      dark: "#db2777",
+    },
+    background: {
+      default: "#f8fafc",
+      paper: "#ffffff",
+    },
+  },
+  typography: {
+    fontFamily: "Roboto, Arial, sans-serif",
+    h4: {
+      fontWeight: 700,
+    },
+    h5: {
+      fontWeight: 600,
+    },
+  },
+  shape: {
+    borderRadius: 12,
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          "&:hover": {
+            transform: "translateY(-8px)",
+            boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
+          },
+        },
+      },
+    },
+  },
+});
+
 // вместо props.name и props.year используем деструктуризацию
 // props - это объект, содержащий все переданные свойства
 // в компонент Header, поэтому мы можем использовать деструктуризацию
@@ -11,28 +92,58 @@ import sofa from "./images/sofa.png";
 // props.name и props.year можно заменить на name и year
 function Header({ name, year }) {
   return (
-    <header className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-xl">
-      <div className="container mx-auto px-6 py-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight mb-2">
-              {name}'s Furniture Showroom
-            </h1>
-            <p className="text-indigo-100 text-lg">
-              Premium furniture collection
-            </p>
-          </div>
-          <div className="text-right">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-              <span className="text-2xl">🏠</span>
-            </div>
-          </div>
-        </div>
-        <div className="mt-4 text-sm text-indigo-200">
-          © {year} All rights reserved
-        </div>
-      </div>
-    </header>
+    <AppBar
+      position="static"
+      sx={{
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+      }}
+    >
+      <Toolbar sx={{ py: 2 }}>
+        <Container
+          maxWidth="lg"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Avatar
+              sx={{
+                bgcolor: "rgba(255,255,255,0.2)",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              <Home />
+            </Avatar>
+            <Box>
+              <Typography
+                variant="h4"
+                component="h1"
+                sx={{ fontWeight: 700, mb: 0.5 }}
+              >
+                {name}'s Furniture Showroom
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{ color: "rgba(255,255,255,0.8)" }}
+              >
+                Premium furniture collection
+              </Typography>
+            </Box>
+          </Box>
+          <Box sx={{ textAlign: "right" }}>
+            <Typography
+              variant="caption"
+              sx={{ color: "rgba(255,255,255,0.7)" }}
+            >
+              © {year} All rights reserved
+            </Typography>
+          </Box>
+        </Container>
+      </Toolbar>
+    </AppBar>
   );
 }
 
@@ -65,43 +176,105 @@ const furniture = [
 
 function FurnitureCard({ item, index }) {
   return (
-    <div
-      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 overflow-hidden card-hover"
-      style={{ animationDelay: `${index * 0.1}s` }}
-    >
-      <div className="relative p-6 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
-        <img
-          src={item.image}
-          className="w-full h-48 object-contain mx-auto transform hover:scale-110 transition-transform duration-300 relative z-10"
-          alt={item.name}
-        />
-        <div className="absolute top-4 right-4 z-20">
-          <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-            {item.category}
-          </span>
-        </div>
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-2 gradient-text">
-          {item.name}
-        </h3>
-        <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-          {item.description}
-        </p>
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-indigo-600">
-              ${item.price}
-            </span>
-            <span className="text-xs text-gray-500">Best Price</span>
-          </div>
-          <button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-full font-medium hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg btn-hover-scale">
+    <Fade in={true} timeout={600 + index * 200}>
+      <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+        <Box
+          sx={{
+            position: "relative",
+            overflow: "hidden",
+            height: 240,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            bgcolor: "#f8f9fa",
+            p: 2,
+          }}
+        >
+          <CardMedia
+            component="img"
+            image={item.image}
+            alt={item.name}
+            sx={{
+              maxHeight: 200,
+              maxWidth: "100%",
+              objectFit: "contain",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.1)",
+              },
+            }}
+          />
+          <Chip
+            label={item.category}
+            color="primary"
+            size="small"
+            sx={{
+              position: "absolute",
+              top: 12,
+              right: 12,
+              fontWeight: 600,
+            }}
+          />
+        </Box>
+        <CardContent sx={{ flexGrow: 1, p: 3 }}>
+          <Typography
+            variant="h6"
+            component="h3"
+            gutterBottom
+            sx={{ fontWeight: 600 }}
+          >
+            {item.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {item.description}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>
+              <Typography
+                variant="h5"
+                component="span"
+                color="primary"
+                sx={{ fontWeight: 700 }}
+              >
+                ${item.price}
+              </Typography>
+              <Typography
+                variant="caption"
+                display="block"
+                color="text.secondary"
+              >
+                Best Price
+              </Typography>
+            </Box>
+          </Box>
+        </CardContent>
+        <CardActions sx={{ p: 3, pt: 0 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            startIcon={<Visibility />}
+            sx={{
+              py: 1.5,
+              fontWeight: 600,
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              "&:hover": {
+                background: "linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)",
+                transform: "translateY(-2px)",
+                boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+              },
+            }}
+          >
             View Details
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </CardActions>
+      </Card>
+    </Fade>
   );
 }
 
@@ -109,64 +282,145 @@ function Main({ furniture, openStatus, toggle }) {
   // Если магазин закрыт, показываем минимальный интерфейс
   if (!openStatus) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-md mx-4">
-          <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="text-4xl">🔒</span>
-          </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            We're Closed
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Sorry, our showroom is currently closed. Please come back later!
-          </p>
-          <button
-            onClick={toggle}
-            className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-3 rounded-full font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+      <Container
+        maxWidth="sm"
+        sx={{
+          minHeight: "80vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Slide direction="up" in={true} timeout={800}>
+          <Paper
+            elevation={8}
+            sx={{
+              p: 6,
+              textAlign: "center",
+              borderRadius: 4,
+              background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            }}
           >
-            Open Showroom
-          </button>
-        </div>
-      </div>
+            <Avatar
+              sx={{
+                width: 80,
+                height: 80,
+                mx: "auto",
+                mb: 3,
+                bgcolor: "error.light",
+                fontSize: "2rem",
+              }}
+            >
+              <LockOutlined fontSize="large" />
+            </Avatar>
+            <Typography
+              variant="h4"
+              component="h2"
+              gutterBottom
+              sx={{ fontWeight: 700, color: "text.primary" }}
+            >
+              We're Closed
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ mb: 4, fontSize: "1.1rem" }}
+            >
+              Sorry, our showroom is currently closed. Please come back later!
+            </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={toggle}
+              startIcon={<Store />}
+              sx={{
+                py: 1.5,
+                px: 4,
+                fontWeight: 600,
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                "&:hover": {
+                  background:
+                    "linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+                },
+              }}
+            >
+              Open Showroom
+            </Button>
+          </Paper>
+        </Slide>
+      </Container>
     );
   }
 
   // Если магазин открыт, показываем полный интерфейс
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-6">
-        {/* Welcome Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-            Currently Open
-          </div>
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            Welcome to Our Showroom!
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover our premium furniture collection designed for modern living
-          </p>
-        </div>
+    <Container maxWidth="lg" sx={{ py: 6 }}>
+      {/* Welcome Section */}
+      <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Alert
+          severity="success"
+          icon={<Store />}
+          sx={{
+            mb: 3,
+            justifyContent: "center",
+            borderRadius: 3,
+            "& .MuiAlert-message": {
+              fontWeight: 600,
+            },
+          }}
+        >
+          Currently Open
+        </Alert>
+        <Typography
+          variant="h3"
+          component="h2"
+          gutterBottom
+          sx={{ fontWeight: 700, mb: 2 }}
+        >
+          Welcome to Our Showroom!
+        </Typography>
+        <Typography
+          variant="h6"
+          color="text.secondary"
+          sx={{ maxWidth: 600, mx: "auto" }}
+        >
+          Discover our premium furniture collection designed for modern living
+        </Typography>
+      </Box>
 
-        {/* Control Button */}
-        <div className="text-center mb-12">
-          <button
-            onClick={toggle}
-            className="bg-gradient-to-r from-red-500 to-rose-600 text-white px-8 py-3 rounded-full font-semibold hover:from-red-600 hover:to-rose-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            Close Showroom
-          </button>
-        </div>
+      {/* Control Button */}
+      <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Button
+          variant="contained"
+          size="large"
+          color="error"
+          onClick={toggle}
+          startIcon={<StoreOutlined />}
+          sx={{
+            py: 1.5,
+            px: 4,
+            fontWeight: 600,
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: "0 8px 25px rgba(244, 67, 54, 0.3)",
+            },
+          }}
+        >
+          Close Showroom
+        </Button>
+      </Box>
 
-        {/* Furniture Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {furniture.map((item, index) => (
-            <FurnitureCard key={item.id} item={item} index={index} />
-          ))}
-        </div>
-      </div>
-    </div>
+      {/* Furniture Grid */}
+      <Grid container spacing={4}>
+        {furniture.map((item, index) => (
+          <Grid item xs={12} sm={6} md={4} key={item.id}>
+            <FurnitureCard item={item} index={index} />
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 }
 
@@ -190,42 +444,99 @@ function App() {
   // при монтировании компонента
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header name="Serhii" year={new Date().getFullYear()} />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+        <Header name="Serhii" year={new Date().getFullYear()} />
 
-      {/* Status Bar */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  status ? "bg-green-500 animate-pulse" : "bg-red-500"
-                }`}
-              ></div>
-              <span className="text-lg font-medium text-gray-700">
-                Showroom is currently{" "}
-                <span className={status ? "text-green-600" : "text-red-600"}>
-                  {status ? "OPEN" : "CLOSED"}
-                </span>
-              </span>
-            </div>
-            <button
-              onClick={toggle}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
-                status
-                  ? "bg-red-100 text-red-700 hover:bg-red-200"
-                  : "bg-green-100 text-green-700 hover:bg-green-200"
-              }`}
+        {/* Status Bar */}
+        <Paper
+          elevation={1}
+          sx={{
+            borderRadius: 0,
+            borderBottom: 1,
+            borderColor: "divider",
+            bgcolor: "background.paper",
+          }}
+        >
+          <Container maxWidth="lg">
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                py: 2,
+              }}
             >
-              {status ? "Close" : "Open"} Showroom
-            </button>
-          </div>
-        </div>
-      </div>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: "50%",
+                    bgcolor: status ? "success.main" : "error.main",
+                    animation: status ? "pulse 2s infinite" : "none",
+                    "@keyframes pulse": {
+                      "0%": { opacity: 1 },
+                      "50%": { opacity: 0.5 },
+                      "100%": { opacity: 1 },
+                    },
+                  }}
+                />
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  Showroom is currently{" "}
+                  <Box
+                    component="span"
+                    sx={{
+                      color: status ? "success.main" : "error.main",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {status ? "OPEN" : "CLOSED"}
+                  </Box>
+                </Typography>
+              </Box>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={status}
+                    onChange={toggle}
+                    color={status ? "error" : "success"}
+                  />
+                }
+                label={`${status ? "Close" : "Open"} Showroom`}
+                sx={{
+                  "& .MuiFormControlLabel-label": {
+                    fontWeight: 600,
+                    color: "text.primary",
+                  },
+                }}
+              />
+            </Box>
+          </Container>
+        </Paper>
 
-      <Main furniture={furniture} openStatus={status} toggle={toggle} />
-    </div>
+        <Main furniture={furniture} openStatus={status} toggle={toggle} />
+
+        {/* Floating Action Button */}
+        <Fab
+          color="primary"
+          aria-label="cart"
+          sx={{
+            position: "fixed",
+            bottom: 32,
+            right: 32,
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            "&:hover": {
+              background: "linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)",
+              transform: "scale(1.1)",
+            },
+          }}
+        >
+          <ShoppingCart />
+        </Fab>
+      </Box>
+    </ThemeProvider>
   );
 }
 
